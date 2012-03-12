@@ -3,8 +3,15 @@ $(PKG)_SOURCE := $(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5 := e0f9f84240f0db9a286aa3a5fa3bd8fb
 $(PKG)_SITE := http://smstools3.kekekasvi.com/packages
 
+<<<<<<< HEAD
 $(PKG)_BINARY:=$($(PKG)_DIR)/src/smsd
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/smsd
+=======
+$(PKG)_DIR:=$(SOURCE_DIR)/$(pkg)-$($(PKG)_VERSION)-source
+
+$(PKG)_BINARY:=$($(PKG)_DIR)/smstools3
+$(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/smstools3
+>>>>>>> change
 
 
 $(PKG_SOURCE_DOWNLOAD)
