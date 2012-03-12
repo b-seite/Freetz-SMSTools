@@ -1,6 +1,6 @@
 $(call PKG_INIT_BIN, 3.1.14)
 $(PKG)_SOURCE := $(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5 := 8bdac54ad3e8de3fdbb2616bc773c2f7
+$(PKG)_SOURCE_MD5 := e0f9f84240f0db9a286aa3a5fa3bd8fb
 $(PKG)_SITE := http://smstools3.kekekasvi.com/packages/
 
 $(PKG)_LIBS := uams_guest uams_dhx2_passwd
