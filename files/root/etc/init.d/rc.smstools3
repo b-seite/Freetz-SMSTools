@@ -1,0 +1,66 @@
+#!/bin/sh
+
+DAEMON=smstools3
+DAEMON_LONG_NAME=SMSTools3
+. /etc/init.d/modlibrc
+
+do_smstools3() {
+  /etc/init.d/sms3 $1
+}
+
+
+config() {
+    mkdir -p /mod/etc/smstools3
+    /mod/etc/default.smstools3/globalsettings_conf > /mod/etc/smstools/globalsetting.conf
+    /mod/etc/default.smstools3/modemsettings_conf > /mod/etc/smstools/modemsettings.default
+}
+
+case $1 in
+	""|load)
+		mkdir -p /tmp/flash/smstools3
+		mkdir -p /var/run
+
+		modlib_adduser ftpuser -G users -D -S -h "/var/media/ftp" -g "ftp user"
+
+		modreg cgi smstools3 "smstools3"
+		modreg file smstools3 globalsettings '$(lang de:"Globale Einstellungen" en:"Global settings")' 1 "globalsettings"
+		modreg file smstools3 modemsettings '$(lang de:"Modemeinstellungen" en:"Modem settings)' 1 "modemsettings"
+		modreg daemon smstools3
+
+		do_smstools3
+		;;
+	unload)
+		modunreg daemon $DAEMON
+		modunreg file smstools3
+		modunreg cgi smstools3
+		do_smstools3 unload
+		;;
+	start)
+	  config
+		do_smstools3 start
+		;;
+	stop)
+		do_smstools3 stop
+		;;
+	restart)
+		do_smstools3 stop
+		config
+		do_smstools3 start
+		;;
+	reload)
+	  config
+		do_smstools3 reload
+		;;
+	status)
+	  do_afpd status
+		;;
+	config)
+		config
+		;;
+	*)
+		echo "Usage: $0 [load|unload|start|stop|restart|reload|status|config]" 1>&2
+		exit 1
+		;;
+esac
+
+exit 0
