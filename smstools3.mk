@@ -3,7 +3,8 @@ $(PKG)_SOURCE := $(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5 := e0f9f84240f0db9a286aa3a5fa3bd8fb
 $(PKG)_SITE := http://smstools3.kekekasvi.com/packages/
 
-
+$(PKG)_BINARY:=$($(PKG)_DIR)/smstools3
+$(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/smstools3
 
 
 PTHREAD_LDFLAGS := -lpthread
@@ -15,16 +16,21 @@ $(PKG_SOURCE_DOWNLOAD)
 $(PKG_UNPACKED)
 $(PKG_CONFIGURED_CONFIGURE)
 
+$($(PKG)_BINARY): $($(PKG)_DIR)/.configured
+	$(SUBMAKE) -C $(SMSTOOLS3_DIR) -f makefile.unix CXX="$(TARGET_CXX)" CXXFLAGS="$(TARGET_CFLAGS)" DEFINES="" LDFLAGS="$(SMSTOOLS3_LDFLAGS)"
+	
+$($(PKG)_TARGET_BINARY): $($PKG)_BINARY)
+		$(INSTALL_BINARY_STRIP)
 
 $(pkg):
 
-$(pkg)-precompiled: $($(PKG)_LIBS_TARGET_DIR) $($(PKG)_BINS_AFPD_TARGET_DIR) $($(PKG)_BINS_DBD_TARGET_DIR)
+$(pkg)-precompiled: $($(PKG)_TARGET_BINARY)
 
 $(pkg)-clean:
-	-$(SUBMAKE) -C $(NETATALK_DIR) clean
-	$(RM) $(NETATALK_FREETZ_CONFIG_FILE)
+	-$(SUBMAKE) -C $(SMSTOOLS3_DIR)  -f makefile.unix clean
+	
 
 $(pkg)-uninstall:
-	$(RM) $(NETATALK_LIBS_TARGET_DIR) $(NETATALK_BINS_AFPD_TARGET_DIR) $(NETATALK_BINS_DBD_TARGET_DIR)
+	$(RM) $(SMSTOOLS3_TARGET_BINARY)
 
 $(PKG_FINISH)
