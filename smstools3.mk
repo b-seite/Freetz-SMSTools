@@ -3,17 +3,7 @@ $(PKG)_SOURCE := $(pkg)-$($(PKG)_VERSION).tar.gz
 $(PKG)_SOURCE_MD5 := e0f9f84240f0db9a286aa3a5fa3bd8fb
 $(PKG)_SITE := http://smstools3.kekekasvi.com/packages/
 
-$(PKG)_LIBS := uams_guest uams_dhx2_passwd
-$(PKG)_LIBS_BUILD_DIR := $($(PKG)_LIBS:%=$($(PKG)_DIR)/etc/uams/.libs/%.so)
-$(PKG)_LIBS_TARGET_DIR := $($(PKG)_LIBS:%=$($(PKG)_DEST_LIBDIR)/%.so)
 
-$(PKG)_BINS_AFPD := afpd hash
-$(PKG)_BINS_AFPD_BUILD_DIR := $($(PKG)_BINS_AFPD:%=$($(PKG)_DIR)/etc/afpd/%)
-$(PKG)_BINS_AFPD_TARGET_DIR := $($(PKG)_BINS_AFPD:%=$($(PKG)_DEST_DIR)/sbin/%)
-
-$(PKG)_BINS_DBD := cnid_dbd cnid_metad dbd
-$(PKG)_BINS_DBD_BUILD_DIR := $($(PKG)_BINS_DBD:%=$($(PKG)_DIR)/etc/cnid_dbd/%)
-$(PKG)_BINS_DBD_TARGET_DIR := $($(PKG)_BINS_DBD:%=$($(PKG)_DEST_DIR)/sbin/%)
 
 
 PTHREAD_LDFLAGS := -lpthread
