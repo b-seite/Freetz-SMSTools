@@ -1,7 +1,7 @@
 $(call PKG_INIT_BIN, 3.1.14)
 $(PKG)_SOURCE := $(pkg)-$($(PKG)_VERSION).tar.gz
-$(PKG)_SOURCE_MD5 := e0f9f84240f0db9a286aa3a5fa3bd8fb
-$(PKG)_SITE := http://smstools3.kekekasvi.com/packages
+$(PKG)_SOURCE_MD5 := 7d9927575000d9644d01e430cacf768d
+$(PKG)_SITE := http://www.beplate.de/dl
 
 $(PKG)_BINARY:=$($(PKG)_DIR)/src/smsd
 $(PKG)_TARGET_BINARY:=$($(PKG)_DEST_DIR)/usr/bin/smsd
