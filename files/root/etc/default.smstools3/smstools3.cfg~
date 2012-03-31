@@ -1,2 +1,0 @@
-export SMSTOOLS3_ENABLED='no'
-export SMSTOOLS_MAX_CLIENTS='5'

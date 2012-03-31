@@ -1,64 +1,66 @@
 #!/bin/sh
 
 DAEMON=smstools3
-DAEMON_LONG_NAME=SMSTools3
+DAEMON_BIN=smsd
+DAEMON_CONFIG=/mod/etc/smstools3/smsd.config
 . /etc/init.d/modlibrc
 
-do_smstools3() {
-  /etc/init.d/sms3 $1
+start() {
+  modlib_startdaemon $DAEMON_BIN \
+	  -c /tmp/flash/smstools3/smsd.config
 }
 
 
 config() {
-    mkdir -p /mod/etc/smstools3
-    /mod/etc/default.smstools3/globalsettings_conf > /mod/etc/smstools/globalsetting.conf
-    /mod/etc/default.smstools3/modemsettings_conf > /mod/etc/smstools/modemsettings.default
+	modlib_config
+   	mkdir -p /mod/etc/smstools3
 }
 
 case $1 in
 	""|load)
-		mkdir -p /tmp/flash/smstools3
-		mkdir -p /var/run
+		mkdir -p /mod/etc/smstools3
+		mkdir -p /var/spool/sms/incoming
+		mkdir -p /var/spool/sms/outgoing
+		mkdir -p /var/spool/sms/checked
 
-		modlib_adduser ftpuser -G users -D -S -h "/var/media/ftp" -g "ftp user"
+		if [ ! -d /tmp/flash/smstools3 ]; then
+			mkdir -p /tmp/flash/smstools3
+			cp /etc/default.smstools3/smsd.config /tmp/flash/smstools3/
+		fi
 
-		modreg cgi smstools3 "smstools3"
-		modreg file smstools3 globalsettings '$(lang de:"Globale Einstellungen" en:"Global settings")' 1 "globalsettings"
-		modreg file smstools3 modemsettings '$(lang de:"Modemeinstellungen" en:"Modem settings)' 1 "modemsettings"
-		modreg daemon smstools3
+		modlib_adduser nobody -s /bin/false -D -S -H -G nobody -g 'nobody'
 
-		do_smstools3
+		modreg cgi 'smstools3' 'SMStools3'	
+		modreg daemon $DAEMON
+		modreg file smstools3 conf '$(lang en:"Smsd config" de:"Konfiguration")' 0 "smsd_conf"
+		modlib_start $SMSTOOLS3_ENABLED
 		;;
 	unload)
 		modunreg daemon $DAEMON
 		modunreg file smstools3
 		modunreg cgi smstools3
-		do_smstools3 unload
+		modlib_stop
 		;;
 	start)
-	  config
-		do_smstools3 start
+		modlib_start
 		;;
 	stop)
-		do_smstools3 stop
+		modlib_stop
 		;;
 	restart)
-		do_smstools3 stop
-		config
-		do_smstools3 start
+		modlib_restart
 		;;
 	reload)
-	  config
-		do_smstools3 reload
-		;;
+		modlib_reload
+		;;	
 	status)
-	  do_afpd status
+	  	modlib_status
 		;;
 	config)
 		config
 		;;
 	*)
-		echo "Usage: $0 [load|unload|start|stop|restart|reload|status|config]" 1>&2
+		echo "Usage: $0 [load|unload|start|stop|reload|restart|status|config]" 1>&2
 		exit 1
 		;;
 esac

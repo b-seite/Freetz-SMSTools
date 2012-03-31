@@ -4,13 +4,14 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin
 . /usr/lib/libmodcgi.sh
 
 check "$SMSTOOLS3_ENABLED" yes:auto "*":man
-select "$NETATALK_LOG_LEVEL" \
-  LOG_SEVERE:logsevere \
-  LOG_ERROR:logerror \
-  LOG_WARN:logwarn \
-  LOG_INFO:loginfo \
-  LOG_DEBUG:logdebug \
-  LOG_MAXDEBUG:logmaxdebug \
+SMSTOOLS3_MESSAGE1=`cat /tmp/flash/smstools3/message1.txt`
+SMSTOOLS3_MESSAGE2=`cat /tmp/flash/smstools3/morsecode1.txt`
+select "$SMSTOOLS3_LOG_LEVEL" \
+  critical:logcritical \
+  error:logerror \
+  warning:logwarn \
+  info:loginfo \
+  debug:logdebug \
 	"*":lognote
 
 sec_begin '$(lang de:"Starttyp" en:"Start type")'
@@ -23,48 +24,37 @@ cat << EOF
 EOF
 
 sec_end
-sec_begin '$(lang de:"Einstellungen" en:"Settings")'
-
-cat << EOF
-<ul>
-<li><a href='$(href file netatalk applevolumes_default)'>$(lang de:"Freigaben" en:"Shares") (AppleVolumes.default)</a></li>
-<li><a href='$(href file netatalk afpd_conf)'>$(lang de:"Virtuelle Datei-Server" en:"Virtual fileservers") (afpd.conf)</a></li>
-</ul>
-EOF
-
-sec_end
-sec_begin '$(lang de:"Benutzer" en:"Users")'
+sec_begin '$(lang de:"SMS Empfang" en:"received SMS")'
 
 cat << EOF
 <p>
-$(lang de:"Benutzer werden wie folgt angelegt und persistent gespeichert" en:"Create and persistently save users as follows"):
+$(lang de:"Letzte empfangene SMS" en:"last received SMS")<br>
+EOF
+echo "$SMSTOOLS3_MESSAGE1"
+cat << EOF
+<br>
+$(lang de:"Ausgabe in Mosrecode" en:"Translated to morse code")<br>
+EOF
+echo "$SMSTOOLS3_MESSAGE2"
+cat << EOF
 </p>
-<ol>
-<li>adduser -g 'Homer Simpson' hsimpson</li>
-<li>modusers save</li>
-<li>modsave flash</li>
-</ol>
 EOF
 
 sec_end
-sec_begin '$(lang de:"Netatalk" en:"Netatalk")'
+
+sec_begin '$(lang de:"Logging" en:"Logging")'
 
 cat << EOF
-<p>
-<label for='max_clients'>$(lang de:"Maximale Anzahl Verbindungen" en:"Maximum number of clients"): </label>
-<input name='max_clients' type='text' size='4' maxlength='3' value='$(html "$NETATALK_MAX_CLIENTS")'>
-</p>
 
 <p>
 <label for='log_level'>$(lang de:"Log-Level" en:"Log level"): </label>
 <select name='log_level' id='log_level'>
-<option $logsevere_sel>LOG_SEVERE</option>
-<option $logerror_sel>LOG_ERROR</option>
-<option $logwarn_sel>LOG_WARN</option>
-<option $lognote_sel>LOG_NOTE</option>
-<option $loginfo_sel>LOG_INFO</option>
-<option $logdebug_sel>LOG_DEBUG</option>
-<option $logmaxdebug_sel>LOG_MAXDEBUG</option>
+<option $logcritical_sel>critical</option>
+<option $logerror_sel>error</option>
+<option $logwarn_sel>warning</option>
+<option $lognote_sel>notice</option>
+<option $loginfo_sel>info</option>
+<option $logdebug_sel>debug</option>
 </select>
 </p>
 EOF

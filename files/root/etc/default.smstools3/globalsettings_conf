@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cat /tmp/flash/smstools3/smsd.conf
-

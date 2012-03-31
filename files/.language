@@ -4,8 +4,7 @@ default
 { en }
 files
 {
-	etc/default.netatalk/afpd_conf.def
-	etc/default.netatalk/applevolumes_default.def
-	etc/init.d/rc.netatalk
-	usr/lib/cgi-bin/netatalk.cgi
+	etc/default.smstools3/smsd_conf.def
+	etc/init.d/rc.smstools3
+	usr/lib/cgi-bin/smstools3.cgi
 }
