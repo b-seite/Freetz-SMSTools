@@ -1,0 +1,6 @@
+CAPTION='Settings: $(lang de:"Konfigdatei" en:"Config file")'
+DESCRIPTION='<a href="http://smstools3.kekekasvi.com/index.php?p=configure" target="_blank">$(lang de:"Syntax siehe Dokumentation auf der Entwicklerwebseite" en:"Syntax see documentation on devellopers homepage")</a><br>'
+CONFIG_FILE='/tmp/flash/smstools3/smsd.config'
+CONFIG_SAVE='modsave flash; if pidof smsd > /dev/null; then echo ""; /mod/etc/init.d/rc.smstools3 restart; fi'
+CONFIG_TYPE='text'
+TEXT_ROWS=10

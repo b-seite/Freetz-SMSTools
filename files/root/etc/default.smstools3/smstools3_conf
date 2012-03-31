@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sed li"loglevel = '$SMSTOOLS3_LOG_LEVEL'" /tmp/flash/smstools3/smsd.config
